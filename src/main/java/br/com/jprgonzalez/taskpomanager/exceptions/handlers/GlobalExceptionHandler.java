@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import br.com.jprgonzalez.taskpomanager.exceptions.ErrorModel;
 import br.com.jprgonzalez.taskpomanager.exceptions.custom.UserAlreadyExistsException;
+import br.com.jprgonzalez.taskpomanager.exceptions.custom.UserNotExistsException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -20,5 +21,15 @@ public class GlobalExceptionHandler {
     );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
     }
-    
+
+    @ExceptionHandler(UserNotExistsException.class)
+    public ResponseEntity<ErrorModel> handleUserNotExists(UserNotExistsException ex) {
+        ErrorModel apiError = new ErrorModel(
+            HttpStatus.NOT_FOUND.value(),
+            HttpStatus.NOT_FOUND.getReasonPhrase(),
+            ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+    }
+
 }
