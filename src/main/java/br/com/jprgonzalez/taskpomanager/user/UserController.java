@@ -10,6 +10,9 @@ import br.com.jprgonzalez.taskpomanager.user.dto.UserResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -27,4 +30,15 @@ public class UserController {
         UserResponseDTO createdUser = userService.createUser(userRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
+
+    @GetMapping("")
+    public ResponseEntity<UserResponseDTO> getUser(
+        @RequestParam(required = false) String username,
+        @RequestParam(required = false) String email,
+        @RequestParam(required = false) Long id
+    ) {
+        UserResponseDTO foundUser = userService.getUser(id, username, email);
+        return ResponseEntity.status(HttpStatus.OK).body(foundUser);
+    }
+    
 }
